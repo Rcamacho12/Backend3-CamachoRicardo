@@ -1,9 +1,8 @@
-import * as mockService from '../services/mocks.service.js';
+import * as mockService from '../services/mock.service.js';
 
 export const mockingPets = (req, res) => {
-  // Si ya tenías /mockingpets, reusa esta acción
-  const pets = mockService.insertMockData({ users:0, pets:20 })
-    .then(() => res.json({ status:'success', payload:pets }))
+  mockService.insertMockData({ users:0, pets:20 })
+    .then(result => res.json({ status:'success', payload: result }))
     .catch(err => res.status(500).json({ status:'error', message:err.message }));
 };
 
@@ -14,9 +13,8 @@ export const mockingUsers = (req, res) => {
 };
 
 export const generateData = async (req, res) => {
-  const { users, pets } = req.body;
   try {
-    const result = await mockService.insertMockData({ users, pets });
+    const result = await mockService.insertMockData(req.body);
     res.json({ status:'success', payload: result });
   } catch (err) {
     res.status(500).json({ status:'error', message: err.message });
